@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Spinner from "../UI/Spinner/Spinner";
+import Spinner from "../../UI/Spinner/Spinner";
 import { connect } from 'react-redux'
-import { login } from '../../store/actions/'
+import { login } from '../../../store/actions'
 import { Redirect } from 'react-router-dom'
 
 const FormWrapper = styled.div`

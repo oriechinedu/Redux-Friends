@@ -67,7 +67,7 @@ export default function Friend({ friend, deleteFriend }) {
         </p>
       </TextWrapper>
       <ControlButtons>
-        <Link to={`friend/${friend.id}`}><EditBtn /></Link>
+        <Link to={`friends/${friend.id}/edit`}><EditBtn /></Link>
         <DeleteBtn onClick={() => deleteFriend(friend.id)}>Delete</DeleteBtn>
       </ControlButtons>
     </FriendWrapper>

@@ -37,7 +37,8 @@ const reducer = (state = initialState, action) => {
     case types.SAVING_FRIENDS_SUCCESS:
       return {
         ...state,
-        friends: action.payload
+        friends: action.payload,
+        isLoading: false,
       }
     default:
       return state
