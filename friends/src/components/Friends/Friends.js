@@ -5,7 +5,6 @@ import Spinner from "../UI/Spinner/Spinner";
 import { fetchFriends } from '../../store/actions/'
 import { connect } from "react-redux";
 
-
 const FriendsContainer = styled.section`
   width: 800px;
   height: 100%;
@@ -30,23 +29,27 @@ class Friends extends React.Component {
   componentDidMount() {
     this.props.fetchFriends()
   }
+
+  deleteFriend = (id) => {
+
+  }
   render() {
     return (
+      <React.Fragment>
+      {this.props.isLoading && <Spinner />}
       <FriendsContainer>
-        {this.props.isLoading && <Spinner />}
-        {this.props.error && (
-          <p style={{ color: "red" }}>{this.props.errorMessage}</p>
-        )}
         <FriendsWrapper>
           {this.props.friends &&
             this.props.friends.map(friend => (
               <Friend
                 key={friend.id}
                 friend={friend}
+                deleteFriend={this.deleteFriend}
               />
             ))}
         </FriendsWrapper>
       </FriendsContainer>
+      </React.Fragment>
     );
   }
 }
