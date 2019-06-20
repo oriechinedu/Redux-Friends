@@ -117,21 +117,25 @@ class FriendForm extends React.Component {
   };
   submitHandler = e => {
     e.preventDefault();
-    const { email, age, name } = this.state.form;
-    if (email && age && name) {
-      this.props
-        .addNewFriend({
-          name,
-          age,
-          email
-        })
-        .then(data => {
-          this.props.history.push("/friends");
-        });
-      this.setState(prevState => ({
-        ...prevState,
-        form: { ...initialState.form }
-      }));
+    if (this.state.isUpdating) {
+      this.updateFriend(this.state.form);
+    } else {
+      const { email, age, name } = this.state.form;
+      if (email && age && name) {
+        this.props
+          .addNewFriend({
+            name,
+            age,
+            email
+          })
+          .then(data => {
+            this.props.history.push("/friends");
+          });
+        this.setState(prevState => ({
+          ...prevState,
+          form: { ...initialState.form }
+        }));
+      }
     }
   };
   render() {
