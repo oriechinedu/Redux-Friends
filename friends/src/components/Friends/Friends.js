@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import Friend from "./Friend";
 import Spinner from "../UI/Spinner/Spinner";
-import { fetchFriends } from '../../store/actions/'
+import { fetchFriends, deleteFriend } from '../../store/actions/'
 import { connect } from "react-redux";
+import {toastr} from 'react-redux-toastr'
 
 const FriendsContainer = styled.section`
   width: 800px;
@@ -31,7 +32,13 @@ class Friends extends React.Component {
   }
 
   deleteFriend = (id) => {
-
+    this.props.deleteFriend(id)
+    .then(() => {
+      toastr.success('Success', 'Friend deleted successfully')
+    })
+    .catch(() => {
+      toastr.error('Error', this.props.error)
+    })
   }
   render() {
     return (
@@ -55,10 +62,10 @@ class Friends extends React.Component {
 }
 const mapStateTpProps = (state) => {
   return {
-    friends: state.friends,
-    isLoading: state.isLoading,
-    error: state.error,
+    friends: state.rootReducer.friends,
+    isLoading: state.rootReducer.isLoading,
+    error: state.rootReducer.error,
     isLoggedIn: localStorage.getItem('token') || null
   }
 }
-export default connect(mapStateTpProps, { fetchFriends} )(Friends)
+export default connect(mapStateTpProps, { fetchFriends, deleteFriend} )(Friends)

@@ -1,9 +1,11 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Spinner from "../UI/Spinner/Spinner";
 import axiosWithAuth from "../../axios";
 import { connect } from "react-redux";
 import { addNewFriend, updateFriend } from "../../store/actions";
+import {toastr} from 'react-redux-toastr'
+
 
 const FormWrapper = styled.div`
   width: 400px;
@@ -79,6 +81,7 @@ class FriendForm extends React.Component {
     this.props
       .updateFriend(this.state.form)
       .then(() => {
+        toastr.success('Success', 'Friend updated successfully')
         this.setState(prevState => ({
           ...prevState,
           isLoading: false,
@@ -88,22 +91,10 @@ class FriendForm extends React.Component {
         this.props.history.push("/friends");
       })
       .catch(err => {
-        //
+        toastr.error('Error', this.props.error)
       });
   };
-  // setCurrentFriend = id => {
-  //   const currentFriend = state.friends.find(fr => fr.id === id);
-  //   this.setState(prevState => ({
-  //     ...prevState,
-  //     isUpdating: true,
-  //     form: {
-  //       name: currentFriend.name,
-  //       age: currentFriend.age,
-  //       email: currentFriend.email
-  //     },
-  //     currentFriend: currentFriend.id
-  //   }));
-  // };
+  
   inputChangeHandler = ({ target }) => {
     const targetValue = target.value;
     const targetName = target.name;
@@ -129,12 +120,18 @@ class FriendForm extends React.Component {
             email
           })
           .then(data => {
+            toastr.success('Success', 'Friend added successfully')
             this.props.history.push("/friends");
+          })
+          .catch(err => {
+            toastr.error('Error', this.props.error)
           });
         this.setState(prevState => ({
           ...prevState,
           form: { ...initialState.form }
         }));
+      } else {
+        toastr.error('Error', 'All fields are Required')
       }
     }
   };
@@ -174,7 +171,8 @@ class FriendForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isLoading: state.isLoading
+    isLoading: state.rootReducer.isLoading,
+    error: state.rootReducer.error
   };
 };
 export default connect(

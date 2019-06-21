@@ -46,7 +46,6 @@ export const fetchFriends = () => dispatch => {
   customAxios()
     .get(`${baseUrl}/friends`)
     .then(res => {
-      console.log(res.data);
       dispatch(fetchingFriendSuccess(res.data));
     })
     .catch(err => {
@@ -69,20 +68,30 @@ export const addNewFriend = payload => dispatch => {
     })
     .catch(err => {
       dispatch(requestFailed(err.message));
-      return true;
     });
 };
 
 export const updateFriend = payload => dispatch => {
-  const { name, email, age, id} = payload;
+  const { name, email, age, id } = payload;
   dispatch(requesting());
   return customAxios()
-    .put(`${baseUrl}/friends/${id}`, {name, email, age})
+    .put(`${baseUrl}/friends/${id}`, { name, email, age })
     .then(res => {
       dispatch(savingFriendSuccess(res.data));
     })
     .catch(err => {
       dispatch(requestFailed(err.message));
-      return true;
     });
-}
+};
+
+export const deleteFriend = id => dispatch => {
+  dispatch(requesting());
+  return customAxios()
+    .delete(`${baseUrl}/friends/${id}`)
+    .then(res => {
+      dispatch(savingFriendSuccess(res.data));
+    })
+    .catch(err => {
+      dispatch(requestFailed(err.message));
+    });
+};
